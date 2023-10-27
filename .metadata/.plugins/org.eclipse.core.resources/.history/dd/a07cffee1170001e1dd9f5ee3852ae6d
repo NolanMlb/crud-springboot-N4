@@ -1,0 +1,40 @@
+/**
+ * 
+ */
+package com.webservice.etude.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.webservice.etude.dto.ProduitDto;
+import com.webservice.etude.enties.Produit;
+import com.webservice.etude.services.ProduitService;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
+/**
+ * 
+ */
+@RestController
+@RequestMapping(value = "/produit")
+public class ProduitController {
+
+	@Autowired
+	private ProduitService produitService;
+	
+	/* recuperer la liste des produits */
+	@RequestMapping(value="/produit-liste", method=RequestMethod.GET)
+	public List<Produit> recupererListeProduit(){
+		return produitService.recupererListeProduit();
+	}
+	
+	@RequestMapping(value="/ajout-produit", method=RequestMethod.POST)
+	public Produit ajouterProduit(@RequestBody ProduitDto produit) {
+		return produitService.creationProduit(produit);
+	}
+}

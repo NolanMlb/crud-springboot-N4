@@ -1,0 +1,60 @@
+/**
+ * 
+ */
+package com.webservice.etude.services;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.webservice.etude.dto.ProduitDto;
+import com.webservice.etude.enties.Categorie;
+import com.webservice.etude.enties.Produit;
+import com.webservice.etude.repositories.ProduitRepository;
+
+/**
+ * 
+ */
+@Service
+public class ProduitService {
+
+	@Autowired
+	private ProduitRepository produitRepository;
+	
+	@Autowired
+	private CategorieService categorieService;
+	
+	public List<Produit> recupererListeProduit(){
+		return produitRepository.findAll();
+	}
+	
+	/* Ajouter un produit */
+	public Produit creationProduit(ProduitDto produitDto) {
+		
+		if(produitDto != null && 
+				produitDto.categorieId() != null) {
+			
+			/* Verifier que la categorie existe dans la bd */
+			Categorie categorie = categorieService.recupererCategorieParId(produitDto.categorieId());
+			if(categorie != null) {
+				Produit produit = new Produit();
+				return produitRepository.save(produit);
+			}
+			
+		}
+		
+		return null;
+		
+	}
+	
+	public Produit updateProduit(Long id, Produit produit) {
+        // Handle Exception
+        return produitRepository.save(produit);
+    }
+    
+    public void deleteProduit(Long id) {
+        // Handle Exception
+        produitRepository.deleteById(id);
+    }
+}
